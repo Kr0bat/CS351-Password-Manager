@@ -1,0 +1,11 @@
+{
+  "domain": {
+    "username": "password",
+    "username_2": "password",
+    "": {}
+  },
+  "reddit": {
+    "copypasta": "hunter",
+    "paste": "42"
+  }
+}
