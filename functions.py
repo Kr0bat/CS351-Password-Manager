@@ -1,6 +1,15 @@
 import json
+import hashlib
+import os
 
 jsonFileName = 'example.json'
+def create_key(masterPass):
+    salt = os.urandom(16)
+    finalPass = bytes(masterPass, "utf-8")
+    dk = hashlib.pbkdf2_hmac('sha512', finalPass, salt, 10000, dklen=256)
+    masterKey = open("masterKey", 'w')
+    masterKey.write(dk.hex())
+    masterKey.close()
 
 
 # Checks if account exists
@@ -29,4 +38,4 @@ def __retrieve_account_helper(json_file_name, domain, username):
     return data[domain][username]
 
 
-print(retrieve_account('reddit.com', 'M'))
+#print(retrieve_account('reddit.com', 'M'))
