@@ -1,22 +1,11 @@
 {
   "<domain_name>": {
-    "accounts": [
-      {
-        "username": "<username>",
-        "password": "<password>"
-      }
-    ]
+    "<account_name_01>": "<password>",
+    "<account_name_02>": "<password>"
   },
   "reddit.com": {
-    "accounts": [
-      {
-        "username": "MemeMan",
-        "password": "hunter42"
-      },
-      {
-        "username": "spez",
-        "password": "honcho"
-      }
-    ]
+    "MemeMan": "hunter42",
+    "username": "spez",
+    "password": "honcho"
   }
 }
