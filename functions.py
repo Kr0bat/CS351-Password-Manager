@@ -42,8 +42,8 @@ def __edit_account_helper(json_file_name, domain, username, new_username, new_pa
     if not data:
         return None
     try:
-        if data[domain][username]:
-            return 1
+        if data[domain][new_username]:
+            return False
     except KeyError:
         pass
     del data[domain][username]
@@ -55,10 +55,9 @@ def __edit_account_helper(json_file_name, domain, username, new_username, new_pa
     return True
 
 
-
 # Delete an account
 
 
 # Add account
 
-print(retrieve_account('reddit.com', 'M'))
+print(edit_account('reddit.com', 'CoolyGuy', 'CoolGuy', 'Testing'))
