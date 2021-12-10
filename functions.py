@@ -1,18 +1,44 @@
 import json
 import hashlib
 import os
+from Crypto.Cipher import AES
+from Crypto import Random
+
+kay = bytes("d0955c392033576a1bccc10ea45baef3", "utf-8")
 
 jsonFileName = 'example.json'
 
 
+#BLOCK_SIZE = 16
+# create a 256 byte AES key to use for encryption and decryption
 def create_key(masterPass):
     salt = os.urandom(16)
     finalPass = bytes(masterPass, "utf-8")
-    dk = hashlib.pbkdf2_hmac('sha512', finalPass, salt, 10000, dklen=256)
+    dk = hashlib.pbkdf2_hmac('sha512', finalPass, salt, 10000, dklen=16)
     masterKey = open("masterKey", 'w')
     masterKey.write(dk.hex())
     masterKey.close()
 
+def encrypt_password(key, password):
+    iv = Random.new().read(AES.block_size)
+    cipher = AES.new(key, AES.MODE_CFB, iv)
+    #print(b"Joe Mama")
+    msg = iv + cipher.encrypt(bytes(password, 'utf-8'))
+    print(msg)
+    return msg
+'''
+    newIv = (msg[:16])
+
+    decipher = AES.new(key, AES.MODE_CFB, iv)
+    print(decipher.decrypt(msg[16:]))
+    '''
+    
+
+def decrypt_password(key, msg):
+    iv = msg[:16]
+    decipher = AES.new(key, AES.MODE_CFB, iv)
+    password = decipher.decrypt(msg[16:])
+    return password.decode()
 
 # Takes in a json file name along with the data
 # Prints it to an output file

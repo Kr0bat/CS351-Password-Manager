@@ -14,7 +14,8 @@ if (Path(masterFileName).is_file()):
 
     while(hashlib.sha256(masterPass.encode()).hexdigest() != hashedMaster):
         masterPass = input("Enter Master Password: ")
-
+        
+    #functions.create_key(masterPass)
     masterFile.close()
 else:
     masterFile = open(masterFileName, 'w')
