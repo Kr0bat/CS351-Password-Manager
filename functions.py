@@ -148,7 +148,3 @@ def __domain_search(json_file_name):
 
 def domain_search():
     return __domain_search(jsonFileName)
-
-
-print(domain_search())
-
