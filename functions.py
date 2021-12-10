@@ -133,3 +133,22 @@ def username_search(domain):
     return __username_search_helper(jsonFileName, domain)
 
 
+# Displays a list of all stored domains
+# Returns an empty list if there are no domains
+def __domain_search(json_file_name):
+    domain_list = []
+    with open(json_file_name) as json_file:
+        data = json.load(json_file)
+
+    for domain in data:
+        domain_list.append(domain)
+
+    return domain_list
+
+
+def domain_search():
+    return __domain_search(jsonFileName)
+
+
+print(domain_search())
+
