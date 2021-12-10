@@ -3,6 +3,14 @@ import json
 jsonFileName = 'example.json'
 
 
+# Takes in a json file name along with the data
+# Prints it to an output file
+def __print_to_json(json_file_name, data):
+    json_file = open(json_file_name, "w")
+    json.dump(data, json_file)
+    json_file.close()
+
+
 # Checks if account exists
 # Returns the json file as a dict if it exists
 # Else returns None
@@ -49,15 +57,28 @@ def __edit_account_helper(json_file_name, domain, username, new_username, new_pa
     del data[domain][username]
     data[domain][new_username] = new_password  # Password needs to be encrypted before insertion
 
-    json_file = open(json_file_name, "w")
-    json.dump(data, json_file)
-    json_file.close()
+    __print_to_json(json_file_name, data)
     return True
 
 
 # Delete an account
+# Return True if operation successful
+# Return None if account does not exist
+def delete_account(domain, username):
+    return __delete_account_helper(jsonFileName, domain, username)
+
+
+def __delete_account_helper(json_file_name, domain, username):
+    data = __account_exists(json_file_name, domain, username)
+    if not data:
+        return None
+
+    del data[domain][username]
+
+    __print_to_json(json_file_name, data)
+    return True
 
 
 # Add account
 
-print(edit_account('reddit.com', 'CoolyGuy', 'CoolGuy', 'Testing'))
+# print(delete_account('reddit.com', 'Epic'))

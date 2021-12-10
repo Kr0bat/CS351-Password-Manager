@@ -1,1 +1,8 @@
-{"<domain_name>": {"<account_name_01>": "<password>", "<account_name_02>": "<password>"}, "reddit.com": {"CoolGuy": "spez", "Epic": "honcho", "CoolyGuy": "Testing"}}
+{"<domain_name>": {
+  "<account_name_01>": "<password>",
+  "<account_name_02>": "<password>"
+},
+  "reddit.com": {
+    "CoolGuy": "spez",
+    "CoolyGuy": "Testing"}
+}
