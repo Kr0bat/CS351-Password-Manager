@@ -135,4 +135,42 @@ def add_account(domain, username, password):
     return __add_account_helper(jsonFileName, domain, username, password)
 
 
-print(add_account('reddit.com', 'CoolGuy3', 'password'))
+# Returns a list of usernames within a domain
+# Returns None if the domain does not exist
+def __username_search_helper(json_file_name, domain):
+    username_list = []
+
+    with open(json_file_name) as json_file:
+        data = json.load(json_file)
+
+    try:
+        if data[domain]:
+            pass
+    except KeyError:
+        return None
+
+    for username in data[domain]:
+        username_list.append(username)
+
+    return username_list
+
+
+def username_search(domain):
+    return __username_search_helper(jsonFileName, domain)
+
+
+# Displays a list of all stored domains
+# Returns an empty list if there are no domains
+def __domain_search(json_file_name):
+    domain_list = []
+    with open(json_file_name) as json_file:
+        data = json.load(json_file)
+
+    for domain in data:
+        domain_list.append(domain)
+
+    return domain_list
+
+
+def domain_search():
+    return __domain_search(jsonFileName)
