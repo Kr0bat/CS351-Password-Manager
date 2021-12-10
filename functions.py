@@ -26,7 +26,39 @@ def __retrieve_account_helper(json_file_name, domain, username):
     data = __account_exists(json_file_name, domain, username)
     if not data:
         return None
-    return data[domain][username]
+    return username, data[domain][username]
 
+
+# Edit an account
+# If account does not exist, return None
+# Return False if new username already exists
+# Return True if operation is successful
+def edit_account(domain, username, new_username, new_password):
+    return __edit_account_helper(jsonFileName, domain, username, new_username, new_password)
+
+
+def __edit_account_helper(json_file_name, domain, username, new_username, new_password):
+    data = __account_exists(json_file_name, domain, username)
+    if not data:
+        return None
+    try:
+        if data[domain][username]:
+            return 1
+    except KeyError:
+        pass
+    del data[domain][username]
+    data[domain][new_username] = new_password  # Password needs to be encrypted before insertion
+
+    json_file = open(json_file_name, "w")
+    json.dump(data, json_file)
+    json_file.close()
+    return True
+
+
+
+# Delete an account
+
+
+# Add account
 
 print(retrieve_account('reddit.com', 'M'))
