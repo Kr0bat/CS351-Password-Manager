@@ -3,6 +3,8 @@ import hashlib
 import os
 
 jsonFileName = 'example.json'
+
+
 def create_key(masterPass):
     salt = os.urandom(16)
     finalPass = bytes(masterPass, "utf-8")
@@ -35,10 +37,6 @@ def __account_exists(json_file_name, domain, username):
 
 # Retrieve linked account's password
 # Return None if it does not exist
-def retrieve_account(domain, username):
-    return __retrieve_account_helper(jsonFileName, domain, username)
-
-
 def __retrieve_account_helper(json_file_name, domain, username):
     data = __account_exists(json_file_name, domain, username)
     if not data:
@@ -46,14 +44,14 @@ def __retrieve_account_helper(json_file_name, domain, username):
     return username, data[domain][username]
 
 
+def retrieve_account(domain, username):
+    return __retrieve_account_helper(jsonFileName, domain, username)
+
+
 # Edit an account
 # If account does not exist, return None
 # Return False if new username already exists
 # Return True if operation is successful
-def edit_account(domain, username, new_username, new_password):
-    return __edit_account_helper(jsonFileName, domain, username, new_username, new_password)
-
-
 def __edit_account_helper(json_file_name, domain, username, new_username, new_password):
     data = __account_exists(json_file_name, domain, username)
     if not data:
@@ -70,13 +68,13 @@ def __edit_account_helper(json_file_name, domain, username, new_username, new_pa
     return True
 
 
+def edit_account(domain, username, new_username, new_password):
+    return __edit_account_helper(jsonFileName, domain, username, new_username, new_password)
+
+
 # Delete an account
 # Return True if operation successful
 # Return None if account does not exist
-def delete_account(domain, username):
-    return __delete_account_helper(jsonFileName, domain, username)
-
-
 def __delete_account_helper(json_file_name, domain, username):
     data = __account_exists(json_file_name, domain, username)
     if not data:
@@ -88,7 +86,27 @@ def __delete_account_helper(json_file_name, domain, username):
     return True
 
 
-# Add account
+def delete_account(domain, username):
+    return __delete_account_helper(jsonFileName, domain, username)
 
-# print(delete_account('reddit.com', 'Epic'))
-#print(retrieve_account('reddit.com', 'M'))
+
+# Add account
+# returns False if the account already exists
+# Returns True if operation successful
+def __add_account_helper(json_file_name, domain, username, password):
+    data = __account_exists(json_file_name, domain, username)
+    if data:
+        return False
+    with open(json_file_name) as json_file:
+        data = json.load(json_file)
+
+    data[domain][username] = password  # Password should be encrypted first before insertion
+    __print_to_json(json_file_name, data)
+    return True
+
+
+def add_account(domain, username, password):
+    return __add_account_helper(jsonFileName, domain, username, password)
+
+
+print(add_account('reddit.com', 'CoolGuy3', 'password'))
