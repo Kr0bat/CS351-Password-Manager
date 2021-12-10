@@ -4,12 +4,12 @@ import os
 from Crypto.Cipher import AES
 from Crypto import Random
 
-#kay = bytes("d0955c392033576a1bccc10ea45baef3", "utf-8")
+# kay = bytes("d0955c392033576a1bccc10ea45baef3", "utf-8")
 
 jsonFileName = 'example.json'
 
 
-#BLOCK_SIZE = 16
+# BLOCK_SIZE = 16
 # create a 256 byte AES key to use for encryption and decryption
 def create_key(masterPass):
     salt = os.urandom(16)
@@ -19,19 +19,24 @@ def create_key(masterPass):
     masterKey.write(dk.hex())
     masterKey.close()
 
+
 def encrypt_password(key, password):
     iv = Random.new().read(AES.block_size)
     cipher = AES.new(key, AES.MODE_CFB, iv)
-    #print(b"Joe Mama")
+    # print(b"Joe Mama")
     msg = iv + cipher.encrypt(bytes(password, 'utf-8'))
     print(msg)
     return msg
+
+
 '''
     newIv = (msg[:16])
 
     decipher = AES.new(key, AES.MODE_CFB, iv)
     print(decipher.decrypt(msg[16:]))
     '''
+
+
 def get_key():
     masterKeyFile = open("masterKey", 'r')
     masterKey = masterKeyFile.readline()
@@ -44,6 +49,7 @@ def decrypt_password(key, msg):
     decipher = AES.new(key, AES.MODE_CFB, iv)
     password = decipher.decrypt(msg[16:])
     return password.decode()
+
 
 # Takes in a json file name along with the data
 # Prints it to an output file
@@ -72,7 +78,9 @@ def __retrieve_account_helper(json_file_name, domain, username):
     data = __account_exists(json_file_name, domain, username)
     if not data:
         return None
-    return username, data[domain][username]
+    encrypted_password = data[domain][username]
+    decrypted_password = decrypt_password(get_key(), encrypted_password)
+    return username, decrypted_password
 
 
 def retrieve_account(domain, username):
@@ -93,14 +101,16 @@ def __edit_account_helper(json_file_name, domain, username, new_username, new_pa
     except KeyError:
         pass
     del data[domain][username]
-    data[domain][new_username] = new_password  # Password needs to be encrypted before insertion
+    encrypted_password = encrypt_password(get_key(), new_password)
+    data[domain][new_username] = encrypted_password
 
     __print_to_json(json_file_name, data)
     return True
 
 
 def edit_account(domain, username, new_username, new_password):
-    return __edit_account_helper(jsonFileName, domain, username, new_username, new_password)
+    encrypted_password = encrypt_password(get_key(), new_password)
+    return __edit_account_helper(jsonFileName, domain, username, new_username, encrypted_password)
 
 
 # Delete an account
@@ -131,7 +141,8 @@ def __add_account_helper(json_file_name, domain, username, password):
     with open(json_file_name) as json_file:
         data = json.load(json_file)
 
-    data[domain][username] = password  # Password should be encrypted first before insertion
+    encrypted_password = encrypt_password(get_key(), password)
+    data[domain][username] = encrypted_password  # Password should be encrypted first before insertion
     __print_to_json(json_file_name, data)
     return True
 
