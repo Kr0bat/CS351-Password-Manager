@@ -1,8 +1,12 @@
 from pathlib import Path
+from pbkdf2 import PBKDF2
+from Crypto.Cipher import AES
 import hashlib
+import functions
 
 masterFileName = "masterpass"
 masterPass = ""
+key = ""
 
 if (Path(masterFileName).is_file()):
     masterFile = open(masterFileName, 'r+')
@@ -12,7 +16,6 @@ if (Path(masterFileName).is_file()):
         masterPass = input("Enter Master Password: ")
 
     masterFile.close()
-
 else:
     masterFile = open(masterFileName, 'w')
 
@@ -23,6 +26,9 @@ else:
         verfication = input("Enter Password Again: ")
 
     masterFile.write(hashlib.sha256(masterPass.encode()).hexdigest())
+    functions.create_key(masterPass)
+
     masterFile.close()
 
 print("Welcome!")
+
