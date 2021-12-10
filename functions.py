@@ -26,17 +26,18 @@ def get_key():
     masterKeyFile.close()
     return bytes(masterKey, "utf-8")
 
-# returns password encrypted using AES
+# returns password (in hex) encrypted using AES
 def encrypt_password(key, password):
     iv = Random.new().read(AES.block_size)
     cipher = AES.new(key, AES.MODE_CFB, iv)
     # print(b"Joe Mama")
     msg = iv + cipher.encrypt(bytes(password, 'utf-8'))
     print(msg)
-    return msg
+    return msg.hex()
 
-# decrypts ciphertext using AES
+# decrypts ciphertext (in hex) using AES, returns a password in plaintext
 def decrypt_password(key, msg):
+    msg = bytes.fromhex(msg)
     iv = msg[:16]
     decipher = AES.new(key, AES.MODE_CFB, iv)
     password = decipher.decrypt(msg[16:])
