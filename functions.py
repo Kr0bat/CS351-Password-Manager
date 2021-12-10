@@ -19,6 +19,14 @@ def create_key(masterPass):
     masterKey.write(dk.hex())
     masterKey.close()
 
+# gets generate AES key from file
+def get_key():
+    masterKeyFile = open("masterKey", 'r')
+    masterKey = masterKeyFile.readline()
+    masterKeyFile.close()
+    return bytes(masterKey, "utf-8")
+
+# returns password encrypted using AES
 def encrypt_password(key, password):
     iv = Random.new().read(AES.block_size)
     cipher = AES.new(key, AES.MODE_CFB, iv)
@@ -26,19 +34,8 @@ def encrypt_password(key, password):
     msg = iv + cipher.encrypt(bytes(password, 'utf-8'))
     print(msg)
     return msg
-'''
-    newIv = (msg[:16])
 
-    decipher = AES.new(key, AES.MODE_CFB, iv)
-    print(decipher.decrypt(msg[16:]))
-    '''
-def get_key():
-    masterKeyFile = open("masterKey", 'r')
-    masterKey = masterKeyFile.readline()
-    masterKeyFile.close()
-    return bytes(masterKey, "utf-8")
-
-
+# decrypts ciphertext using AES
 def decrypt_password(key, msg):
     iv = msg[:16]
     decipher = AES.new(key, AES.MODE_CFB, iv)
