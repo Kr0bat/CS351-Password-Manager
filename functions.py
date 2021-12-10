@@ -4,7 +4,7 @@ import os
 from Crypto.Cipher import AES
 from Crypto import Random
 
-kay = bytes("d0955c392033576a1bccc10ea45baef3", "utf-8")
+#kay = bytes("d0955c392033576a1bccc10ea45baef3", "utf-8")
 
 jsonFileName = 'example.json'
 
@@ -32,7 +32,12 @@ def encrypt_password(key, password):
     decipher = AES.new(key, AES.MODE_CFB, iv)
     print(decipher.decrypt(msg[16:]))
     '''
-    
+def get_key():
+    masterKeyFile = open("masterKey", 'r')
+    masterKey = masterKeyFile.readline()
+    masterKeyFile.close()
+    return bytes(masterKey, "utf-8")
+
 
 def decrypt_password(key, msg):
     iv = msg[:16]
