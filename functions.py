@@ -4,13 +4,11 @@ import os
 from Crypto.Cipher import AES
 from Crypto import Random
 
-# kay = bytes("d0955c392033576a1bccc10ea45baef3", "utf-8")
 
 jsonFileName = 'example.json'
 
-
 # BLOCK_SIZE = 16
-# create a 256 byte AES key to use for encryption and decryption
+# create a 256 bit AES key to use for encryption and decryption
 def create_key(masterPass):
     salt = os.urandom(16)
     finalPass = bytes(masterPass, "utf-8")
