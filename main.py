@@ -59,6 +59,7 @@ def main_menu():
             domain = input('Please enter a domain: ')
             username = input('Please enter a username: ')
             password = input('Please enter a password: ')
+            print('Your password has a strength of', functions.check_strength(password))
             if functions.add_account(domain, username, password):
                 print('Account added!')
             else:
@@ -108,12 +109,8 @@ def main_menu():
                 print('No accounts saved under that domain')
             else:
                 print(domain_list)
-
-
         else:
             print('Sorry, command not recognized. Please try again.')
-
-
 
 
 if __name__ == '__main__':
