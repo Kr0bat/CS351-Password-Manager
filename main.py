@@ -47,7 +47,9 @@ def main_menu():
         print('Select 0 to exit')
         print('Select 1 to add an account')
         print("Select 2 to view an account's password")
+        print('Select 3 to edit an account')
         input_command = input('Please select an activity: ')
+
         if input_command == '0':
             exit()
         elif input_command == '1':
@@ -67,6 +69,27 @@ def main_menu():
                 print('Password:', password[1])
             else:
                 print('Sorry, account not found')
+        elif input_command == '3':
+            domain = input('Please enter a domain: ')
+            username = input('Please enter a username: ')
+            password = input('Please enter a password: ')
+            new_username = input('Please enter a new username (Leave blank to leave username unchanged): ')
+            new_password = input('Please enter a new password (Leave blank to leave password unchanged): ')
+            if new_username == '':
+                new_username = username
+            if new_password == '':
+                new_password = password
+            result = functions.edit_account(domain, username, new_username, new_password)
+            if result is None:
+                print('Sorry, that account does not exist')
+            elif not result:
+                print('Sorry, your new username is already taken')
+            elif result:
+                print('Account edited!')
+
+        else:
+            print('Sorry, command not recognized. Please try again.')
+
 
 
 if __name__ == '__main__':
