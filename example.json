@@ -1,10 +1,1 @@
-{"<domain_name>": {
-  "<account_name_01>": "<password>",
-  "<account_name_02>": "<password>"
-},
-  "reddit.com": {
-    "CoolGuy": "spez",
-    "CoolyGuy": "Testing",
-    "CoolGuy3": "password"
-  }
-}
+{"<domain_name>": {"<account_name_01>": "<password>", "<account_name_02>": "<password>"}, "reddit.com": {"CoolGuy": "spez", "CoolyGuy": "Testing", "CoolGuy3": "password", "username": "3de7a880c67c2e235bc19787c1d0a5f8b713b61778edc7d5", "username2": "da254ba9caaa06d2abc769ed1c852fd0fd506ff001208609"}}

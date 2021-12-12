@@ -32,7 +32,6 @@ def encrypt_password(key, password):
     cipher = AES.new(key, AES.MODE_CFB, iv)
     # print(b"Joe Mama")
     msg = iv + cipher.encrypt(bytes(password, 'utf-8'))
-    print(msg)
     return msg.hex()
 
 # decrypts ciphertext (in hex) using AES, returns a password in plaintext
