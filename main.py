@@ -83,6 +83,7 @@ def main_menu():
                 new_username = username
             if new_password == '':
                 new_password = password
+            print('Your password has a strength of', functions.check_strength(new_password))
             result = functions.edit_account(domain, username, new_username, new_password)
             if result is None:
                 print('Sorry, that account does not exist')
