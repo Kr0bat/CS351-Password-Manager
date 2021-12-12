@@ -33,6 +33,10 @@ def master_password():
 
         masterFile.write(hashlib.sha256(masterPass.encode()).hexdigest())
         functions.create_key(masterPass)
+        storageFile = open("storage.json", 'w')
+        storageFile.write('{}')
+        storageFile.close()
+
 
         masterFile.close()
 
@@ -75,20 +79,20 @@ def main_menu():
                 print('Sorry, account not found')
         elif input_command == '3':
             domain = input('Please enter a domain: ')
-            username = input('Please enter a username: ')
-            password = input('Please enter a password: ')
-            new_username = input('Please enter a new username (Leave blank to leave username unchanged): ')
-            new_password = input('Please enter a new password (Leave blank to leave password unchanged): ')
-            if new_username == '':
-                new_username = username
-            if new_password == '':
-                new_password = password
+            username = input('Please enter account\'s username: ')
+            #password = input('Please enter a password: ')
+            #new_username = input('Please enter a new username (Leave blank to leave username unchanged): ')
+            new_password = input('Please enter a new password: ')
+            #if new_username == '':
+                #new_username = username
+            #if new_password == '':
+                #new_password = password
             print('Your password has a strength of', functions.check_strength(new_password))
-            result = functions.edit_account(domain, username, new_username, new_password)
+            result = functions.edit_account(domain, username, new_password)
             if result is None:
                 print('Sorry, that account does not exist')
-            elif not result:
-                print('Sorry, your new username is already taken')
+            #elif not result:
+                #print('Sorry, your new username is already taken')
             elif result:
                 print('Account edited!')
         elif input_command == '4':
@@ -115,4 +119,5 @@ def main_menu():
 
 
 if __name__ == '__main__':
+    master_password()
     main_menu()

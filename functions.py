@@ -4,7 +4,7 @@ import os
 from Crypto.Cipher import AES
 from Crypto import Random
 
-jsonFileName = 'example.json'
+jsonFileName = 'storage.json'
 
 
 # BLOCK_SIZE = 16
@@ -82,28 +82,30 @@ def retrieve_account(domain, username):
 
 # Edit an account
 # If account does not exist, return None
-# Return False if new username already exists
+# Return False if new username already exists <-- This will be removed
 # Return True if operation is successful
-def __edit_account_helper(json_file_name, domain, username, new_username, new_password):
+def __edit_account_helper(json_file_name, domain, username, new_password):
     data = __account_exists(json_file_name, domain, username)
     if not data:
         return None
+    """
     try:
-        if data[domain][new_username]:
+        if data[domain][username]:
             return False
     except KeyError:
         pass
-    del data[domain][username]
-    encrypted_password = encrypt_password(get_key(), new_password)
-    data[domain][new_username] = encrypted_password
+    """
+    #del data[domain][username]
+    #encrypted_password = encrypt_password(get_key(), new_password)
+    data[domain][username] = new_password
 
     __print_to_json(json_file_name, data)
     return True
 
 
-def edit_account(domain, username, new_username, new_password):
+def edit_account(domain, username, new_password):
     encrypted_password = encrypt_password(get_key(), new_password)
-    return __edit_account_helper(jsonFileName, domain, username, new_username, encrypted_password)
+    return __edit_account_helper(jsonFileName, domain, username, encrypted_password)
 
 
 # Delete an account
@@ -128,6 +130,7 @@ def delete_account(domain, username):
 # returns False if the account already exists
 # Returns True if operation successful
 def __add_account_helper(json_file_name, domain, username, password):
+    __create_domain(json_file_name, domain)
     data = __account_exists(json_file_name, domain, username)
     if data:
         return False
@@ -143,6 +146,12 @@ def __add_account_helper(json_file_name, domain, username, password):
 def add_account(domain, username, password):
     return __add_account_helper(jsonFileName, domain, username, password)
 
+def __create_domain(json_file_name, domain):
+    with open(json_file_name) as json_file:
+        data = json.load(json_file)
+        if not (domain in data):
+            data[domain] = {}
+        __print_to_json(json_file_name, data)
 
 # Returns a list of usernames within a domain
 # Returns None if the domain does not exist
