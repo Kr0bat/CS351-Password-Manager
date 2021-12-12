@@ -4,8 +4,8 @@ import os
 from Crypto.Cipher import AES
 from Crypto import Random
 
-
 jsonFileName = 'example.json'
+
 
 # BLOCK_SIZE = 16
 # create a 256 bit AES key to use for encryption and decryption
@@ -17,12 +17,14 @@ def create_key(masterPass):
     masterKey.write(dk.hex())
     masterKey.close()
 
+
 # gets generate AES key from file
 def get_key():
     masterKeyFile = open("masterKey", 'r')
     masterKey = masterKeyFile.readline()
     masterKeyFile.close()
     return bytes(masterKey, "utf-8")
+
 
 # returns password (in hex) encrypted using AES
 def encrypt_password(key, password):
@@ -31,6 +33,7 @@ def encrypt_password(key, password):
     # print(b"Joe Mama")
     msg = iv + cipher.encrypt(bytes(password, 'utf-8'))
     return msg.hex()
+
 
 # decrypts ciphertext (in hex) using AES, returns a password in plaintext
 def decrypt_password(key, msg):
@@ -181,6 +184,7 @@ def __domain_search(json_file_name):
 def domain_search():
     return __domain_search(jsonFileName)
 
+
 # returns a score of 0 to 3 depending on the strength of the given password
 # 0 == terrible
 # 1 == weak
@@ -192,8 +196,8 @@ def check_strength(password):
     word = "pie"
     if (len(password) > 9):
         strength += 1
-    if( (any( letter.isupper() for letter in password)) and ( (any( letter.islower() for letter in password )) ) ):
+    if ((any(letter.isupper() for letter in password)) and ((any(letter.islower() for letter in password)))):
         strength += 1
-    if( any( letter.isdigit() for letter in password )):
-        strength +=1
+    if (any(letter.isdigit() for letter in password)):
+        strength += 1
     return strength

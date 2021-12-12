@@ -48,6 +48,9 @@ def main_menu():
         print('Select 1 to add an account')
         print("Select 2 to view an account's password")
         print('Select 3 to edit an account')
+        print('Select 4 to delete an account')
+        print('Select 5 to to view all domains')
+        print('Select 6 to view all usernames in a domain')
         input_command = input('Please select an activity: ')
 
         if input_command == '0':
@@ -86,9 +89,30 @@ def main_menu():
                 print('Sorry, your new username is already taken')
             elif result:
                 print('Account edited!')
+        elif input_command == '4':
+            domain = input('Please enter a domain: ')
+            username = input('Please enter a username: ')
+            confirm = input('Are you sure you wish to delete this account? (y/n)')
+            if confirm == 'y':
+                result = functions.delete_account(domain, username)
+                if result is None:
+                    print('Sorry, that account does not exist')
+                elif result:
+                    print('Account deleted!')
+        elif input_command == '5':
+            print(functions.domain_search())
+        elif input_command == '6':
+            domain = input('Please enter a domain: ')
+            domain_list = functions.username_search(domain)
+            if not domain_list:
+                print('No accounts saved under that domain')
+            else:
+                print(domain_list)
+
 
         else:
             print('Sorry, command not recognized. Please try again.')
+
 
 
 
