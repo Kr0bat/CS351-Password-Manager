@@ -183,3 +183,20 @@ def __domain_search(json_file_name):
 
 def domain_search():
     return __domain_search(jsonFileName)
+
+# returns a score of 0 to 3 depending on the strength of the given password
+# 0 == terrible
+# 1 == weak
+# 2 == decent
+# 3 == strong
+
+def check_strength(password):
+    strength = 0
+    word = "pie"
+    if (len(password) > 9):
+        strength += 1
+    if( (any( letter.isupper() for letter in password)) and ( (any( letter.islower() for letter in password )) ) ):
+        strength += 1
+    if( any( letter.isdigit() for letter in password )):
+        strength +=1
+    return strength
